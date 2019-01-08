@@ -114,8 +114,11 @@
 			var scene = new THREE.Scene();
 			var camera = new THREE.Camera();
 			camera.matrixAutoUpdate = false;
-			camera.projectionMatrix.elements.set(this.getCameraMatrix());
-
+			if (typeof camera.projectionMatrix.elements.set === "function") {
+				camera.projectionMatrix.elements.set(this.getCameraMatrix());
+			} else {
+				camera.projectionMatrix.elements=[].slice.call(this.getCameraMatrix());
+			}
 			scene.add(camera);
 
 
@@ -285,7 +288,11 @@
 
 				}
 				if (obj) {
-					obj.matrix.elements.set(ev.data.matrix);
+					if (typeof obj.matrix.elements.set === "function") {
+						obj.matrix.elements.set(ev.data.matrix);
+					} else {
+						obj.matrix.elements=[].slice.call(ev.data.matrix);
+					}
 					obj.visible = true;
 				}
 			});
@@ -300,7 +307,11 @@
 				obj = this.threeNFTMarkers[ev.data.marker.id];
 
 				if (obj) {
-					obj.matrix.elements.set(ev.data.matrix);
+					if (typeof obj.matrix.elements.set === "function") {
+						obj.matrix.elements.set(ev.data.matrix);
+					} else {
+						obj.matrix.elements=[].slice.call(ev.data.matrix);
+					}
 					obj.visible = true;
 				}
 			});
@@ -311,7 +322,11 @@
 			this.addEventListener('getMultiMarker', function(ev) {
 				var obj = this.threeMultiMarkers[ev.data.multiMarkerId];
 				if (obj) {
-					obj.matrix.elements.set(ev.data.matrix);
+					if (typeof obj.matrix.elements.set === "function") {
+						obj.matrix.elements.set(ev.data.matrix);
+					} else {
+						obj.matrix.elements=[].slice.call(ev.data.matrix);
+					}
 					obj.visible = true;
 				}
 			});
@@ -326,7 +341,11 @@
 				var obj = this.threeMultiMarkers[marker];
 				if (obj && obj.markers && obj.markers[subMarkerID]) {
 					var sub = obj.markers[subMarkerID];
-					sub.matrix.elements.set(ev.data.matrix);
+					if (typeof sub.matrix.elements.set === "function") {
+						sub.matrix.elements.set(ev.data.matrix);
+					} else {
+						sub.matrix.elements=[].slice.call(ev.data.matrix);
+					}
 					sub.visible = (subMarker.visible >= 0);
 				}
 			});
